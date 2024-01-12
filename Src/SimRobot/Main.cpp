@@ -7,6 +7,8 @@
 #include <QApplication>
 #include <QLocale>
 #include <QSurfaceFormat>
+#include <vector>
+#include <string>
 
 extern void qt_registerDefaultPlatformBackingStoreOpenGLSupport();
 
@@ -22,7 +24,7 @@ extern void qt_registerDefaultPlatformBackingStoreOpenGLSupport();
 #include <QFileOpenEvent>
 
 /** The address of the main window object used by the following class. */
-static MainWindow* mainWindow = nullptr;
+static MainWindow *mainWindow = nullptr;
 
 /**
  * A helper for opening files when they were launched from the Finder and closing windows
@@ -33,15 +35,15 @@ static MainWindow* mainWindow = nullptr;
 class SimRobotApp : public QApplication
 {
 public:
-  SimRobotApp(int& argc, char** argv)
-    : QApplication(argc, argv) {}
+  SimRobotApp(int &argc, char **argv)
+      : QApplication(argc, argv) {}
 
 protected:
-  bool event(QEvent* ev)
+  bool event(QEvent *ev)
   {
-    if(ev->type() == QEvent::FileOpen)
+    if (ev->type() == QEvent::FileOpen)
     {
-      mainWindow->openFile(static_cast<QFileOpenEvent*>(ev)->file());
+      mainWindow->openFile(static_cast<QFileOpenEvent *>(ev)->file());
       return true;
     }
     return QApplication::event(ev);
@@ -52,7 +54,7 @@ protected:
 #define QApplication SimRobotApp
 #endif // MACOS
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 #ifdef WINDOWS
   _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
@@ -99,10 +101,16 @@ int main(int argc, char* argv[])
 #endif
 
   // open file from commandline
-  for(int i = 1; i < argc; i++)
-    if(*argv[i] != '-' && strcmp(argv[i], "YES"))
+  for (int i = 1; i < argc; i++)
+    if (*argv[i] != '-' && strcmp(argv[i], "YES"))
     {
-      mainWindow.openFile(argv[i]);
+
+      std::vector<float> positions;
+
+      for (int j = (i + 1); j < argc; j++)
+        positions.push_back(std::stof(argv[j]));
+
+      mainWindow.openFile(argv[i], positions);
       break;
     }
 

@@ -29,9 +29,6 @@ public:
   /** Registers child objects in the scene graph. */
   virtual void registerObjects();
 
-  /** Registers child objects in the scene graph. (with custom positions for one robot and ball)*/
-  virtual void registerObjects(float r_x, float r_z, float b_x, float b_z);
-
   QString fullName;                /**< The path name to the object in the scene graph. */
   std::string name;                /**< The name of the object in the scene graph (without the path to it). */
   std::list<SimObject *> children; /**< The list of children of this object. */

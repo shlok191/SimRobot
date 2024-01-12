@@ -8,6 +8,7 @@
 
 #include "ActuatorsWidget.h"
 #include "Simulation/Simulation.h"
+#include <vector>
 #include <SimRobot.h>
 #include <QIcon>
 
@@ -20,8 +21,8 @@ class SimObject;
 class CoreModule : public SimRobot::Module, public Simulation
 {
 public:
-  static SimRobot::Application* application;
-  static CoreModule* module;
+  static SimRobot::Application *application;
+  static CoreModule *module;
 
   QIcon sceneIcon;
   QIcon objectIcon;
@@ -36,7 +37,7 @@ public:
    * Constructor
    * @param application The interface to the SimRobot application that loaded the module
    */
-  CoreModule(SimRobot::Application& application);
+  CoreModule(SimRobot::Application &application);
 
 private:
   /**
@@ -47,6 +48,7 @@ private:
    * @return Whether an error occurred while initializing the module or not
    */
   bool compile() override;
+  bool compile(std::vector<float> &positions);
 
   /** Called to perform another simulation step */
   void update() override;

@@ -12,6 +12,7 @@
 #include "Tools/Math/Pose3f.h"
 #include "Tools/Math/RotationMatrix.h"
 #include <QString>
+#include <vector>
 #include <list>
 #include <string>
 
@@ -22,30 +23,31 @@
 class SimObject : public ElementCore2
 {
 public:
-  QString fullName; /**< The path name to the object in the scene graph */
-  std::string name; /**< The name of the scene graph object (without path) */
-  std::list<SimObject*> children; /**< List of subordinate scene graph objects */
-  Vector3f* translation = nullptr; /**< The initial translational offset relative to the origin of the parent object */
-  RotationMatrix* rotation = nullptr; /**< The initial rotational offset relative to the origin of the parent object */
-  Pose3f poseInParent; /**< The (updated) offset relative to the origin of the parent object */
+  QString fullName;                   /**< The path name to the object in the scene graph */
+  std::string name;                   /**< The name of the scene graph object (without path) */
+  std::list<SimObject *> children;    /**< List of subordinate scene graph objects */
+  Vector3f *translation = nullptr;    /**< The initial translational offset relative to the origin of the parent object */
+  RotationMatrix *rotation = nullptr; /**< The initial rotational offset relative to the origin of the parent object */
+  Pose3f poseInParent;                /**< The (updated) offset relative to the origin of the parent object */
 
   /** Destructor */
   ~SimObject();
 
   /** Registers this object with children, actuators and sensors at SimRobot's GUI */
   virtual void registerObjects();
+  virtual void registerObjects(float r_x, float r_y, float b_x, float b_z);
 
 protected:
   /**
    * Registers an element as parent
    * @param element The element to register
    */
-  virtual void addParent(Element& element);
+  virtual void addParent(Element &element);
 
 protected:
   // API
-  virtual const QString& getFullName() const {return fullName;}
-  virtual SimRobot::Widget* createWidget();
-  virtual const QIcon* getIcon() const;
-  virtual SimRobotCore2::Renderer* createRenderer();
+  virtual const QString &getFullName() const { return fullName; }
+  virtual SimRobot::Widget *createWidget();
+  virtual const QIcon *getIcon() const;
+  virtual SimRobotCore2::Renderer *createRenderer();
 };
