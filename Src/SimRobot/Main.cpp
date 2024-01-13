@@ -9,8 +9,10 @@
 #include <QSurfaceFormat>
 #include <vector>
 #include <string>
+#include "global.h"
 
 extern void qt_registerDefaultPlatformBackingStoreOpenGLSupport();
+std::vector<float> positions;
 
 #ifdef WINDOWS
 #include <crtdbg.h>
@@ -56,6 +58,7 @@ protected:
 
 int main(int argc, char *argv[])
 {
+
 #ifdef WINDOWS
   _CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
   //_CrtSetBreakAlloc(18969); // Use to track down memory leaks
@@ -105,12 +108,10 @@ int main(int argc, char *argv[])
     if (*argv[i] != '-' && strcmp(argv[i], "YES"))
     {
 
-      std::vector<float> positions;
-
       for (int j = (i + 1); j < argc; j++)
         positions.push_back(std::stof(argv[j]));
 
-      mainWindow.openFile(argv[i], positions);
+      mainWindow.openFile(argv[i]);
       break;
     }
 

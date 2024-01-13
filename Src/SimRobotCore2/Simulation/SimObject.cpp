@@ -5,6 +5,7 @@
  */
 
 #include "SimObject.h"
+#include "global.h"
 #include "CoreModule.h"
 #include "SimObjectRenderer.h"
 #include "SimObjectWidget.h"
@@ -34,30 +35,6 @@ void SimObject::registerObjects()
     if (simObject->name.empty())
     {
       const char *typeName = typeid(*simObject).name();
-#ifdef __GNUC__
-      while (std::isdigit(*typeName))
-        ++typeName;
-#else
-      const char *str = std::strchr(typeName, ' ');
-      if (str)
-        typeName = str + 1;
-#endif
-      simObject->fullName = fullName + "." + typeName;
-    }
-    else
-      simObject->fullName = fullName + "." + simObject->name.c_str();
-    CoreModule::application->registerObject(*CoreModule::module, dynamic_cast<SimRobot::Object &>(*simObject), dynamic_cast<SimRobot::Object *>(this));
-    simObject->registerObjects();
-  }
-}
-
-void SimObject::registerObjects(float r_x, float r_z, float b_x, float b_z)
-{
-  for (SimObject *simObject : children)
-  {
-    if (simObject->name.empty())
-    {
-      const char *typeName = typeid(*simObject).name();
 #ifdef WINDOWS
       const char *str = std::strchr(typeName, ' ');
       if (str)
@@ -74,11 +51,11 @@ void SimObject::registerObjects(float r_x, float r_z, float b_x, float b_z)
 
     // Adding custom code to update the robot position to a custom value!
     if (simObject->name == "robot5")
-      simObject->poseInParent.translate(r_x, 0.0f, r_z);
+      simObject->poseInParent.translate(positions[0], 0.0f, positions[1]);
 
     // Adding custom code to update the ball position to a custom value!
     if (simObject->name == "ball")
-      simObject->poseInParent.translate(b_x, 0.0f, b_z);
+      simObject->poseInParent.translate(positions[2], 0.0f, positions[3]);
 
     CoreModule::application->registerObject(*CoreModule::module, dynamic_cast<SimRobot::Object &>(*simObject), dynamic_cast<SimRobot::Object *>(this));
     simObject->registerObjects();

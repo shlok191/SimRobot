@@ -33,6 +33,7 @@ CoreModule::CoreModule(SimRobot::Application &application) : sceneIcon(":/Icons/
   CoreModule::module = this;
 }
 
+/**/
 bool CoreModule::compile()
 {
   Q_ASSERT(!scene);
